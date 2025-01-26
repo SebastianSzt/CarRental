@@ -1,8 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using CarRental.Model;
-using CarRental.Repository.Categories;
-using CarRental.Repository.Orders;
-using CarRental.Repository.Products;
 using CarRental.Repository.Cars;
 using CarRental.Repository.Rentals;
 using CarRental.Repository.Reviews;
@@ -14,9 +11,6 @@ var connectionString = builder.Configuration.GetConnectionString("AppDbContext")
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
