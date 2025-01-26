@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CarRental.Dto.Cars.CarDto>
+
+@{
+    ViewData["Title"] = "Available Cars";
+}
+
+<h2>Available Cars</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p><em>No cars available.</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var car in Model)
+        {
+            <li>@car.Brand @car.Model (@car.Year) - @car.Color</li>
+        }
+    </ul>
+}
+

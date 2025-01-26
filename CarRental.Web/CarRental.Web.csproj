@@ -15,4 +15,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.36" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarRental.Api\CarRental.Api.csproj" />
+    <ProjectReference Include="..\CarRental.Model\CarRental.Model.csproj" />
+  </ItemGroup>
+
 </Project>
