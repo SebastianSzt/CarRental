@@ -38,14 +38,15 @@ namespace CarRental.Repository.Users
             if (user == null)
                 return false;
 
-            DbContext.Entry(user).State = user.Id == default(string) ? EntityState.Added : EntityState.Modified;
-            
+            DbContext.Entry(user).State = await DbContext.Users.AnyAsync(u => u.Id == user.Id) ? EntityState.Modified : EntityState.Added;
+
             try
             {
                 await DbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error saving user: {ex.Message}");
                 return false;
             }
 
