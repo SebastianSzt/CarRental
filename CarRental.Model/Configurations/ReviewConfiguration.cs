@@ -16,7 +16,10 @@ namespace CarRental.Model.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Comment).HasMaxLength(1000);
-            builder.Property(x => x.Rating).IsRequired();
+            builder.Property(x => x.Rating).HasMaxLength(1).IsRequired();
+            builder.Property(x => x.Date).HasColumnType("datetime").IsRequired();
+            builder.Property(x => x.CarId).IsRequired();
+            builder.Property(x => x.UserId).IsRequired();
 
             builder.HasOne(x => x.Car)
                 .WithMany(x => x.Reviews)

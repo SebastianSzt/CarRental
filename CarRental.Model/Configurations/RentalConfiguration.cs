@@ -15,9 +15,13 @@ namespace CarRental.Model.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.StartDate).HasColumnType("datetime").IsRequired();
+            builder.Property(x => x.EndDate).HasColumnType("datetime").IsRequired();
             builder.Property(x => x.TotalPrice).HasColumnType("decimal(18,2)");
             builder.Property(x => x.Status).HasMaxLength(50);
-            
+            builder.Property(x => x.CarId).IsRequired();
+            builder.Property(x => x.UserId).IsRequired();
+
             builder.HasOne(x => x.Car)
                 .WithMany(x => x.Rentals)
                 .HasForeignKey(x => x.CarId);

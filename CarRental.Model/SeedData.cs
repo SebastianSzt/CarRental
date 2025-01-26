@@ -73,7 +73,7 @@ namespace CarRental.Model
                     FirstName = "Kamil",
                     LastName = "Kowal",
                     Role = "User",
-                    PhoneNumber = "987654321",
+                    PhoneNumber = "987654321"
                 };
 
                 regularUser.PasswordHash = passwordHasher.HashPassword(regularUser, "zaq1@WSX");

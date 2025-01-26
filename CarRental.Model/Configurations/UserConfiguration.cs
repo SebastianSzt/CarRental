@@ -16,11 +16,10 @@ namespace CarRental.Model.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Email).HasMaxLength(100).IsRequired();
-            builder.Property(x => x.PasswordHash).HasMaxLength(100).IsRequired();
+            builder.Property(x => x.PasswordHash).HasMaxLength(127).IsRequired();
             builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
             builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
-            builder.Property(x => x.Role).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.PhoneNumber).HasMaxLength(15);
+            builder.Property(x => x.PhoneNumber).HasMaxLength(15).IsRequired();
 
             builder.HasMany(x => x.Rentals)
                 .WithOne(x => x.User);

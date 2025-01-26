@@ -13,10 +13,10 @@ namespace CarRental.Model.Entities
         public DateTime EndDate { get; set; }
         public decimal TotalPrice { get; set; }
         public string? Status { get; set; }
-        public int CarId { get; set; }
-        public string UserId { get; set; }
 
+        public int CarId { get; set; }
         public Car Car { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
     }
 }
