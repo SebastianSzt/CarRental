@@ -16,15 +16,15 @@ else
         @foreach (var car in Model)
         {
             <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" src="~/images/@(string.IsNullOrEmpty(car.Image) ? "noPhoto.jpg" : car.Image)" alt="@car.Brand @car.Model">
-                    <div class="card-body">
+                <div class="card mb-4 box-shadow" style="height: 100%;">
+                    <img class="card-img-top" src="~/images/@(string.IsNullOrEmpty(car.Image) ? "noImage.jpg" : car.Image)" alt="@car.Brand @car.Model" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
                         <div class="d-flex justify-content-end">
                             <span class="text-muted">@car.AverageRating &#9733;  (@car.ReviewCount)</span>
                         </div>
                         <h5 class="card-title">@car.Brand @car.Model</h5>
                         <p class="card-text">@car.PricePerDay PLN/day</p>
-                        <div class="d-flex justify-content-center">
+                        <div class="mt-auto d-flex justify-content-center">
                             <button class="btn btn-sm btn-outline-secondary w-100">More</button>
                         </div>
                     </div>
