@@ -27,8 +27,11 @@ namespace CarRental.Model
                         Year = 2020,
                         FuelType = "Benzyna",
                         FuelConsumption = 6.5m,
+                        FuelTankCapacity = 50,
+                        HorsePower = 120,
+                        SeatCount = 5,
                         PricePerDay = 150,
-                        Location = "Warszawa",
+                        Location = "Warszawa ul. Bajeczna 3",
                         Description = "Idealny do miasta",
                         Image = "toyota-corolla.jpg"
                     },
@@ -40,8 +43,11 @@ namespace CarRental.Model
                         Year = 2018,
                         FuelType = "Diesel",
                         FuelConsumption = 5.5m,
+                        FuelTankCapacity = 45,
+                        HorsePower = 110,
+                        SeatCount = 5,
                         PricePerDay = 120,
-                        Location = "Kraków",
+                        Location = "Kraków ul. Wesoła 125",
                         Description = "Wygodny i ekonomiczny",
                         Image = "ford-focus.jpg"
                     }
@@ -51,10 +57,11 @@ namespace CarRental.Model
 
             if (!context.Users.Any())
             {
-                var passwordHasher = new PasswordHasher<User>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
                 var adminUser = new User
                 {
+                    UserName = "admin@gmail.com",
                     Email = "admin@gmail.com",
                     FirstName = "Admin",
                     LastName = "Administrator",
@@ -62,13 +69,15 @@ namespace CarRental.Model
                     PhoneNumber = "123456789"
                 };
 
-                adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "zaq1@WSX");
-
-                context.Users.Add(adminUser);
-                context.SaveChanges();
+                var result = userManager.CreateAsync(adminUser, "zaq1@WSX").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Cannot create admin user");
+                }
 
                 var regularUser = new User
                 {
+                    UserName = "kamilkowal@gmail.com",
                     Email = "kamilkowal@gmail.com",
                     FirstName = "Kamil",
                     LastName = "Kowal",
@@ -76,9 +85,11 @@ namespace CarRental.Model
                     PhoneNumber = "987654321"
                 };
 
-                regularUser.PasswordHash = passwordHasher.HashPassword(regularUser, "zaq1@WSX");
-                context.Users.Add(regularUser);
-                context.SaveChanges();
+                result = userManager.CreateAsync(regularUser, "zaq1@WSX").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Cannot create user");
+                }
             }
 
             if (!context.Rentals.Any())
