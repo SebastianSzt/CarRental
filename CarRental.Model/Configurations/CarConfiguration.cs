@@ -21,6 +21,9 @@ namespace CarRental.Model.Configurations
             builder.Property(x => x.Year).HasMaxLength(4);
             builder.Property(x => x.FuelType).HasMaxLength(50).IsRequired();
             builder.Property(x => x.FuelConsumption).HasColumnType("decimal(18,2)").IsRequired();
+            builder.Property(x => x.FuelTankCapacity).HasColumnType("decimal(18,2)").IsRequired();
+            builder.Property(x => x.HorsePower).IsRequired();
+            builder.Property(x => x.SeatCount).IsRequired();
             builder.Property(x => x.PricePerDay).HasColumnType("decimal(18,2)").IsRequired();
             builder.Property(x => x.Location).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Image).HasMaxLength(500);

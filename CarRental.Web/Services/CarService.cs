@@ -19,5 +19,10 @@ namespace CarRental.Web.Services
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<CarDto>>("api/Cars");
         }
+
+        public async Task<CarDto> GetCarByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<CarDto>($"api/Cars/{id}");
+        }
     }
 }

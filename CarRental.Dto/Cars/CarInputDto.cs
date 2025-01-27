@@ -32,6 +32,15 @@ namespace CarRental.Dto.Cars
         public decimal FuelConsumption { get; set; }
 
         [Required]
+        public decimal FuelTankCapacity { get; set; }
+
+        [Required]
+        public int HorsePower { get; set; }
+
+        [Required]
+        public int SeatCount { get; set; }
+
+        [Required]
         public decimal PricePerDay { get; set; }
 
         [Required]

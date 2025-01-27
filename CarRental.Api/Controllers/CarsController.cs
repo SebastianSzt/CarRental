@@ -61,6 +61,9 @@ namespace CarRental.Api.Controllers
                 Year = car.Year,
                 FuelType = car.FuelType,
                 FuelConsumption = car.FuelConsumption,
+                FuelTankCapacity = car.FuelTankCapacity,
+                HorsePower = car.HorsePower,
+                SeatCount = car.SeatCount,
                 PricePerDay = car.PricePerDay,
                 Location = car.Location,
                 Image = car.Image,
@@ -95,6 +98,9 @@ namespace CarRental.Api.Controllers
             existingCar.Year = car.Year;
             existingCar.FuelType = car.FuelType;
             existingCar.FuelConsumption = car.FuelConsumption;
+            existingCar.FuelTankCapacity = car.FuelTankCapacity;
+            existingCar.HorsePower = car.HorsePower;
+            existingCar.SeatCount = car.SeatCount;
             existingCar.PricePerDay = car.PricePerDay;
             existingCar.Location = car.Location;
             existingCar.Image = car.Image;

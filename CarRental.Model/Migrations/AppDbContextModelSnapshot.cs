@@ -46,13 +46,18 @@ namespace CarRental.Model.Migrations
                     b.Property<decimal>("FuelConsumption")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("FuelTankCapacity")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("FuelType")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("HorsePower")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -68,6 +73,9 @@ namespace CarRental.Model.Migrations
 
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SeatCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("Year")
                         .HasMaxLength(4)

@@ -17,7 +17,7 @@ else
         {
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow" style="height: 100%;">
-                    <img class="card-img-top" src="~/images/@(string.IsNullOrEmpty(car.Image) ? "noImage.jpg" : car.Image)" alt="@car.Brand @car.Model" style="height: 200px; object-fit: cover;">
+                    <img class="card-img-top" src="~/images/@(string.IsNullOrEmpty(car.Image) ? "noImage.jpg" : car.Image)" alt="@car.Brand @car.Model" style="height: 200px; object-fit: cover;" onerror="this.onerror=null;this.src='~/images/noPhoto.jpg';">
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex justify-content-end">
                             <span class="text-muted">@car.AverageRating &#9733;  (@car.ReviewCount)</span>
@@ -25,7 +25,7 @@ else
                         <h5 class="card-title">@car.Brand @car.Model</h5>
                         <p class="card-text">@car.PricePerDay PLN/day</p>
                         <div class="mt-auto d-flex justify-content-center">
-                            <button class="btn btn-sm btn-outline-secondary w-100">More</button>
+                            <a href="@Url.Action("More", "Cars", new { id = car.Id })" class="btn btn-sm btn-outline-secondary w-100">More</a>
                         </div>
                     </div>
                 </div>

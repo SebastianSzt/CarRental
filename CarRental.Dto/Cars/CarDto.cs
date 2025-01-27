@@ -15,6 +15,9 @@ namespace CarRental.Dto.Cars
         public int Year { get; set; }
         public string FuelType { get; set; }
         public decimal FuelConsumption { get; set; }
+        public decimal FuelTankCapacity { get; set; }
+        public int HorsePower { get; set; }
+        public int SeatCount { get; set; }
         public decimal PricePerDay { get; set; }
         public string Location { get; set; }
         public string Image { get; set; }
