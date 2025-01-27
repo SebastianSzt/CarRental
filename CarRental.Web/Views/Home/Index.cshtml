@@ -2,7 +2,62 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators" id="carousel-indicators">
+    </div>
+    <div class="carousel-inner" id="carousel-inner">
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+
+<div class="text-center mt-5">
+    <h1 class="display-4">Welcome to CarRental</h1>
+    <p class="lead">Your one-stop solution for car rentals.</p>
+    <p>At CarRental, we offer a wide range of vehicles to suit your needs, whether you're looking for a compact car for city driving or a spacious SUV for a family trip. Our mission is to provide you with the best rental experience possible.</p>
+    <p>Learn more about our services and how we can help you with your car rental needs.</p>
+    <a href="@Url.Action("LearnMore", "Home")" class="btn btn-primary">Learn More</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <h2>Wide Range of Vehicles</h2>
+        <p>We offer a diverse selection of vehicles, from economy cars to luxury SUVs, to meet all your rental needs.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Affordable Prices</h2>
+        <p>Our competitive pricing ensures that you get the best value for your money. Check out our special offers and discounts.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Excellent Customer Service</h2>
+        <p>Our dedicated customer service team is here to assist you 24/7. Contact us for any inquiries or support.</p>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <h2>Contact Us</h2>
+    <p>If you have any questions or need assistance, feel free to reach out to us.</p>
+    <a href="@Url.Action("Contact", "Home")" class="btn btn-secondary">Contact Us</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.getJSON('@Url.Action("GetImageFiles", "Home")', function (data) {
+                var indicators = $('#carousel-indicators');
+                var inner = $('#carousel-inner');
+                $.each(data, function (index, value) {
+                    var activeClass = index === 0 ? 'active' : '';
+                    indicators.append('<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + index + '" class="' + activeClass + '" aria-current="true" aria-label="Slide ' + (index + 1) + '"></button>');
+                    inner.append('<div class="carousel-item ' + activeClass + '"><img src="/images/' + value + '" class="d-block w-100" alt="..."></div>');
+                });
+            });
+        });
+    </script>
+}

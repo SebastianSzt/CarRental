@@ -5,9 +5,9 @@ namespace CarRental.Web.Controllers
 {
     public class CarsController : Controller
     {
-        private readonly ICarService _carService;
+        private readonly CarService _carService;
 
-        public CarsController(ICarService carService)
+        public CarsController(CarService carService)
         {
             _carService = carService;
         }

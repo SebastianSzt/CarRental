@@ -6,7 +6,7 @@ using CarRental.Dto.Cars;
 
 namespace CarRental.Web.Services
 {
-    public class CarService : ICarService
+    public class CarService
     {
         private readonly HttpClient _httpClient;
 
