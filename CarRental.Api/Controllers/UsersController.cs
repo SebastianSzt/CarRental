@@ -15,10 +15,13 @@ namespace CarRental.Api.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        private readonly UserManager<User> _userManager;
+
+        public UsersController(IUserRepository userRepository, IMapper mapper, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpGet("{id}")]
@@ -45,8 +48,8 @@ namespace CarRental.Api.Controllers
             return Ok(usersDto);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UserInputDto user)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserInputDto user)
         {
             if (user == null)
                 return BadRequest();
@@ -54,10 +57,9 @@ namespace CarRental.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var passwordHasher = new PasswordHasher<User>();
-
-            var newUser = new User()
+            var newUser = new User
             {
+                UserName = user.Email,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -65,15 +67,47 @@ namespace CarRental.Api.Controllers
                 PhoneNumber = user.PhoneNumber
             };
 
-            newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
+            var result = await _userManager.CreateAsync(newUser, user.Password);
 
-            var result = await _userRepository.SaveUserAsync(newUser);
-            if (!result)
-                throw new Exception("Error saving user");
+            if (result.Succeeded)
+            {
+                var saveResult = await _userRepository.SaveUserAsync(newUser);
+                if (!saveResult)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error saving user to the database.");
+                }
 
-            var userDto = _mapper.Map<UserDto>(newUser);
+                return Ok();
+            }
 
-            return Ok(userDto);
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginInputDto login)
+        {
+            if (login == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.FindByEmailAsync(login.Email);
+            if (user == null)
+                return Unauthorized();
+
+            var result = await _userManager.CheckPasswordAsync(user, login.Password);
+            if (result)
+            {
+                return Ok(new { UserId = user.Id });
+            }
+
+            return Unauthorized();
         }
 
         [HttpPut("{id}")]

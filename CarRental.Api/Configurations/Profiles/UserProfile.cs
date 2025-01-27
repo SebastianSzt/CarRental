@@ -10,7 +10,8 @@ namespace CarRental.Api.Configurations.Profiles
         {
             CreateMap<User, UserDto>()
                 .ForMember(x => x.RentalCount, d => d.MapFrom(s => s.Rentals == null ? 0 : s.Rentals.Count))
-                .ForMember(x => x.ReviewCount, d => d.MapFrom(s => s.Reviews == null ? 0 : s.Reviews.Count));
+                .ForMember(x => x.ReviewCount, d => d.MapFrom(s => s.Reviews == null ? 0 : s.Reviews.Count))
+                .ForMember(x => x.UserName, d => d.MapFrom(s => $"{s.FirstName} {s.LastName}"));
         }
     }
 }

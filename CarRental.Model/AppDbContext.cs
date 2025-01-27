@@ -18,12 +18,12 @@ namespace CarRental.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new CarConfiguration());
             modelBuilder.ApplyConfiguration(new RentalConfiguration());
             modelBuilder.ApplyConfiguration(new ReviewConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

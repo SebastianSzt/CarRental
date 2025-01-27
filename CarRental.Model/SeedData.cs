@@ -78,6 +78,7 @@ namespace CarRental.Model
 
                 regularUser.PasswordHash = passwordHasher.HashPassword(regularUser, "zaq1@WSX");
                 context.Users.Add(regularUser);
+                context.SaveChanges();
             }
 
             if (!context.Rentals.Any())

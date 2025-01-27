@@ -7,27 +7,16 @@ using System.Threading.Tasks;
 
 namespace CarRental.Dto.Users
 {
-    public class UserInputDto
+    public class LoginInputDto
     {
         [Required]
         [MaxLength(100)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [MaxLength(127)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string LastName { get; set; }
-
-        [Required]
-        [MaxLength(15)]
-        public string PhoneNumber { get; set; }
     }
 }
