@@ -23,7 +23,7 @@ namespace CarRental.Model.Configurations
             builder.Property(x => x.FuelConsumption).HasColumnType("decimal(18,2)").IsRequired();
             builder.Property(x => x.PricePerDay).HasColumnType("decimal(18,2)").IsRequired();
             builder.Property(x => x.Location).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Image).HasMaxLength(500).IsRequired();
+            builder.Property(x => x.Image).HasMaxLength(500);
             builder.Property(x => x.Description).HasMaxLength(1000);
 
             builder.HasMany(x => x.Rentals)

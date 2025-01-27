@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CarRental.Dto.Cars.CarDto>
 
 @{
-    ViewData["Title"] = "Available Cars";
+    ViewData["Title"] = "All Cars";
 }
 
-<h2>Available Cars</h2>
+<h2>All Cars</h2>
 
 @if (Model == null || !Model.Any())
 {
@@ -12,11 +12,24 @@
 }
 else
 {
-    <ul>
+    <div class="row">
         @foreach (var car in Model)
         {
-            <li>@car.Brand @car.Model (@car.Year) - @car.Color</li>
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="~/images/@(string.IsNullOrEmpty(car.Image) ? "noPhoto.jpg" : car.Image)" alt="@car.Brand @car.Model">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end">
+                            <span class="text-muted">@car.AverageRating &#9733;  (@car.ReviewCount)</span>
+                        </div>
+                        <h5 class="card-title">@car.Brand @car.Model</h5>
+                        <p class="card-text">@car.PricePerDay PLN/day</p>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-sm btn-outline-secondary w-100">More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </ul>
+    </div>
 }
-

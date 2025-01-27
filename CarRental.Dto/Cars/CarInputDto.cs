@@ -38,7 +38,6 @@ namespace CarRental.Dto.Cars
         [MaxLength(200)]
         public string Location { get; set; }
 
-        [Required]
         [MaxLength(500)]
         public string Image { get; set; }
 
