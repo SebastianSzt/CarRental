@@ -37,6 +37,7 @@ namespace CarRental.Web.Controllers
             var imagePath = Path.Combine(_env.WebRootPath, "images");
             var imageFiles = Directory.GetFiles(imagePath)
                                       .Select(Path.GetFileName)
+                                      .Where(fileName => fileName != "noImage.jpg")
                                       .ToList();
             return Json(imageFiles);
         }
