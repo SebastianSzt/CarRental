@@ -63,8 +63,13 @@ namespace CarRental.Web.Controllers
                 UserId = userId
             };
 
+            var rentals = await _rentalService.GetTakenRentalsByCarIdAsync(id);
+
             ViewData["Title"] = "Rent Car";
             ViewData["Car"] = car;
+
+            if (rentals != null)
+                ViewData["Rentals"] = rentals;
 
             return View(model);
         }
@@ -79,8 +84,13 @@ namespace CarRental.Web.Controllers
                 return View(model);
             }
 
+            var rentals = await _rentalService.GetTakenRentalsByCarIdAsync(model.CarId);
+
             ViewData["Title"] = "Rent Car";
             ViewData["Car"] = car;
+
+            if (rentals != null)
+                ViewData["Rentals"] = rentals;
 
             if (model.StartDate < DateTime.Now)
             {
@@ -99,6 +109,9 @@ namespace CarRental.Web.Controllers
             if (success)
             {
                 TempData["SuccessMessage"] = "Reservation successful. Check your email for details.";
+                rentals = await _rentalService.GetTakenRentalsByCarIdAsync(model.CarId);
+                if (rentals != null)
+                    ViewData["Rentals"] = rentals;
                 return View(model);
             }
             else

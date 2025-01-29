@@ -15,7 +15,7 @@ namespace CarRental.Api.Controllers
         private readonly IRentalRepository _rentalRepository;
         private readonly ICarRepository _carRepository;
         private readonly IMapper _mapper;
-        
+
         public RentalsController(IRentalRepository rentalRepository, ICarRepository carRepository, IMapper mapper)
         {
             _rentalRepository = rentalRepository;
@@ -33,6 +33,27 @@ namespace CarRental.Api.Controllers
             var rentalDto = _mapper.Map<RentalDto>(rental);
 
             return Ok(rentalDto);
+        }
+
+        [HttpGet("car/{carId}/taken-rentals")]
+        public async Task<IActionResult> GetTakenRentalsByCarId(int carId)
+        {
+            var car = await _carRepository.GetCarByIdAsync(carId);
+            if (car == null)
+                return NotFound("Car not found");
+
+            var rentals = await _rentalRepository.GetAllRentalsAsync();
+            var currentAndFutureRentalsByCar = rentals
+                .Where(r => r.CarId == carId && (r.StartDate <= DateTime.Now && r.EndDate >= DateTime.Now || r.StartDate > DateTime.Now))
+                .OrderBy(r => r.StartDate)
+                .ToList();
+
+            if (!currentAndFutureRentalsByCar.Any())
+                return NotFound("No taken rentals found for this car");
+
+            var rentalsDto = _mapper.Map<List<RentalDto>>(currentAndFutureRentalsByCar);
+
+            return Ok(rentalsDto);
         }
 
         [HttpGet]

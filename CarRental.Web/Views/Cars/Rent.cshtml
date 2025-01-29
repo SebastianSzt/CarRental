@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Rent Car";
     var car = ViewData["Car"] as CarRental.Dto.Cars.CarDto;
+    var rentals = ViewData["Rentals"] as List<CarRental.Dto.Rentals.RentalDto>;
 }
 
 <h2>Rent Car</h2>
@@ -57,6 +58,31 @@
         </div>
         TempData["SuccessMessage"] = null;
     }
+</div>
+
+<div class="card mt-3 rounded">
+    <div class="card-body">
+        <h3>Taken Rentals</h3>
+        <br />
+        <hr />
+        <div id="rentals">
+            @if (rentals != null && rentals.Any())
+            {
+                @foreach (var rental in rentals)
+                {
+                    <div class="rental">
+                        <p><strong>Start Date:</strong> @rental.StartDate</p>
+                        <p><strong>End Date:</strong> @rental.EndDate</p>
+                    </div>
+                    <hr />
+                }
+            }
+            else
+            {
+                <p>No taken rentals found for this car.</p>
+            }
+        </div>
+    </div>
 </div>
 
 @section Scripts {
