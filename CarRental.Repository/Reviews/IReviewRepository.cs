@@ -11,6 +11,7 @@ namespace CarRental.Repository.Reviews
     {
         Task<Review?> GetReviewByIdAsync(int id);
         Task<List<Review>> GetAllReviewsAsync();
+        Task<List<Review>> GetReviewsByCarIdAsync(int carId);
         Task<bool> SaveReviewAsync(Review review);
         Task<bool> DeleteReviewAsync(int id);
     }

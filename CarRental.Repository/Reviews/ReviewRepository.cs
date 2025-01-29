@@ -23,6 +23,17 @@ namespace CarRental.Repository.Reviews
             return review;
         }
 
+        public async Task<List<Review>> GetReviewsByCarIdAsync(int carId)
+        {
+            var reviews = await DbContext.Reviews
+                .Include(x => x.Car)
+                .Include(x => x.User)
+                .Where(x => x.CarId == carId)
+                .ToListAsync();
+
+            return reviews;
+        }
+
         public async Task<List<Review>> GetAllReviewsAsync()
         {
             var reviews = await DbContext.Reviews

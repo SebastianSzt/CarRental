@@ -1,4 +1,5 @@
 ﻿@model CarRental.Dto.Cars.CarDto
+@inject CarRental.Web.Services.ReviewService ReviewService
 @inject CarRental.Web.Services.UserService UserService
 
 @{
@@ -10,6 +11,8 @@
     {
         user = UserService.GetUserByIdAsync(userId).GetAwaiter().GetResult();
     }
+
+    var reviews = ReviewService.GetReviewsByCarIdAsync(Model.Id).GetAwaiter().GetResult();
 }
 
 <div class="container">
@@ -30,6 +33,29 @@
             <p><strong>Description:</strong> @Model.Description</p>
             <p><strong>Average Rating:</strong> @Model.AverageRating &#9733; (@Model.ReviewCount reviews)</p>
             <a href="javascript:void(0);" class="btn btn-primary mt-3" onclick="checkUserAndRedirect('@Url.Action("Rent", "Cars", new { id = Model.Id })')">Rent</a>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <hr />
+            <h3>Reviews</h3>
+            <div id="reviews">
+                @if (reviews != null && reviews.Any())
+                {
+                    @foreach (var review in reviews)
+                    {
+                        <div class="review">
+                            <p><strong>@review.UserName</strong> (@review.Date.ToShortDateString())</p>
+                            <p>@review.Comment</p>
+                            <p>Rating: @review.Rating &#9733;</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No reviews available.</p>
+                }
+            </div>
         </div>
     </div>
 </div>

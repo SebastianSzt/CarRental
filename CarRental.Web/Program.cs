@@ -18,7 +18,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]) });
 
 builder.Services.AddScoped<CarService>();
+builder.Services.AddScoped<RentalService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ReviewService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();

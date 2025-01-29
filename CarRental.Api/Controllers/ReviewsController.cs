@@ -32,6 +32,18 @@ namespace CarRental.Api.Controllers
             return Ok(reviewDto);
         }
 
+        [HttpGet("car/{carId}")]
+        public async Task<IActionResult> GetByCarId(int carId)
+        {
+            var reviews = await _reviewRepository.GetReviewsByCarIdAsync(carId);
+            if (reviews == null || !reviews.Any())
+                return NotFound();
+
+            var reviewsDto = _mapper.Map<List<ReviewDto>>(reviews);
+
+            return Ok(reviewsDto);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
