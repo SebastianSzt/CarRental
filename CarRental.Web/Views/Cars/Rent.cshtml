@@ -1,0 +1,94 @@
+﻿@model CarRental.Dto.Rentals.RentalInputDto
+
+@{
+    ViewData["Title"] = "Rent Car";
+    var car = ViewData["Car"] as CarRental.Dto.Cars.CarDto;
+}
+
+<h2>Rent Car</h2>
+
+<div>
+    <h4>@car.Brand @car.Model</h4>
+    <br />
+    <p>Price per day:<span id="pricePerDay">@car.PricePerDay</span> PLN</p>
+    <p>Total price: <span id="totalPrice">0.00</span> PLN</p>
+
+    <form asp-action="Rent" method="post">
+        <input type="hidden" asp-for="CarId" value="@car.Id" />
+        <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+        <div class="form-group">
+            <label asp-for="StartDate"></label>
+            <input asp-for="StartDate" class="form-control" onchange="calculateTotalPrice()" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="EndDate"></label>
+            <input asp-for="EndDate" class="form-control" onchange="calculateTotalPrice()" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+
+        <br />
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+            <label class="form-check-label" for="acceptTerms">
+                I accept the <a href="/Home/TermsAndConditions" target="_blank" rel="noopener noreferrer">terms and conditions</a>
+            </label>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary" id="rentButton" disabled>Rent</button>
+    </form>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["ErrorMessage"]
+        </div>
+        TempData["ErrorMessage"] = null;
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            @TempData["SuccessMessage"]
+        </div>
+        TempData["SuccessMessage"] = null;
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        function calculateTotalPrice() 
+        {
+            var startDate = new Date(document.querySelector('[name="StartDate"]').value);
+            var endDate = new Date(document.querySelector('[name="EndDate"]').value);
+            var pricePerDay = new Number(@car.PricePerDay);
+
+            if (startDate && endDate && startDate <= endDate) 
+            {
+                var days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                var totalPrice = days * pricePerDay;
+                document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
+            } 
+            else 
+            {
+                document.getElementById('totalPrice').innerText = '0.00';
+            }
+        }
+
+         document.addEventListener('DOMContentLoaded', function() {
+            calculateTotalPrice();
+
+            var rentButton = document.getElementById('rentButton');
+            var acceptTerms = document.getElementById('acceptTerms');
+
+            acceptTerms.addEventListener('change', function() {
+                rentButton.disabled = !this.checked;
+            });
+        });
+    </script>
+}

@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace CarRental.Dto.Rentals
 {
-    public class RentalInputDto
+    public class RentalAllInputsDto
     {
         [Required]
         public DateTime StartDate { get; set; }
 
         [Required]
         public DateTime EndDate { get; set; }
+
+        public decimal TotalPrice { get; set; }
+
+        [MaxLength(50)]
+        public string Status { get; set; }
 
         [Required]
         public int CarId { get; set; }

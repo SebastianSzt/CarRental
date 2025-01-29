@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarRental.Dto.Rentals;
 using CarRental.Model.Entities;
+using CarRental.Repository.Cars;
 using CarRental.Repository.Rentals;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,13 @@ namespace CarRental.Api.Controllers
     public class RentalsController : ControllerBase
     {
         private readonly IRentalRepository _rentalRepository;
+        private readonly ICarRepository _carRepository;
         private readonly IMapper _mapper;
-
-        public RentalsController(IRentalRepository rentalRepository, IMapper mapper)
+        
+        public RentalsController(IRentalRepository rentalRepository, ICarRepository carRepository, IMapper mapper)
         {
             _rentalRepository = rentalRepository;
+            _carRepository = carRepository;
             _mapper = mapper;
         }
 
@@ -53,16 +56,31 @@ namespace CarRental.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var existingRentals = await _rentalRepository.GetAllRentalsAsync();
+            if (existingRentals.Any(r => r.CarId == rental.CarId &&
+                                         ((rental.StartDate >= r.StartDate && rental.StartDate <= r.EndDate) ||
+                                          (rental.EndDate >= r.StartDate && rental.EndDate <= r.EndDate))))
+            {
+                return Conflict("The car is already rented in the given period.");
+            }
+
+            var car = await _carRepository.GetCarByIdAsync(rental.CarId);
+            if (car == null)
+                return Conflict("Car not found");
+
+            var totalDays = Math.Ceiling(Math.Abs((rental.StartDate - rental.EndDate).TotalDays));
+            var totalPrice = (decimal)totalDays * car.PricePerDay;
+
             var newRental = new Rental()
             {
                 StartDate = rental.StartDate,
                 EndDate = rental.EndDate,
-                TotalPrice = rental.TotalPrice,
-                Status = rental.Status,
+                TotalPrice = totalPrice,
+                Status = "Pending",
                 CarId = rental.CarId,
                 UserId = rental.UserId
             };
-            
+
             var result = await _rentalRepository.SaveRentalAsync(newRental);
             if (!result)
                 throw new Exception("Error saving rental");
@@ -75,7 +93,7 @@ namespace CarRental.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] RentalInputDto rental)
+        public async Task<IActionResult> Put(int id, [FromBody] RentalAllInputsDto rental)
         {
             if (rental == null)
                 return BadRequest();

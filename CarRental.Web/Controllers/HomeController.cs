@@ -31,6 +31,11 @@ namespace CarRental.Web.Controllers
             return View();
         }
 
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult GetImageFiles()
         {
