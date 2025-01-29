@@ -18,7 +18,10 @@ namespace CarRental.Web.Services
         public async Task<List<ReviewDto>> GetReviewsByCarIdAsync(int carId)
         {
             var response = await _httpClient.GetAsync($"api/Reviews/car/{carId}");
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<ReviewDto>();
+            }
             return await response.Content.ReadFromJsonAsync<List<ReviewDto>>();
         }
     }
