@@ -1,8 +1,29 @@
 ﻿@page
+@inject CarRental.Web.Services.UserService UserService
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model CarRental.Web.Areas.Identity.Pages.Account.LoginModel
 @{
     ViewData["Title"] = "Login";
+
+    string userId = UserService.GetUserId();
+    CarRental.Dto.Users.UserDto user = null;
+
+    if (!string.IsNullOrEmpty(userId))
+    {
+        user = UserService.GetUserByIdAsync(userId).GetAwaiter().GetResult();
+        if (user != null)
+        {
+            Response.Redirect("/");
+        }
+    }
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+    TempData["ErrorMessage"] = null;
 }
 
 <h2>Login</h2>

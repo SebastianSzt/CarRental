@@ -1,7 +1,15 @@
 ﻿@model CarRental.Dto.Cars.CarDto
+@inject CarRental.Web.Services.UserService UserService
 
 @{
     ViewData["Title"] = $"{Model.Brand} {Model.Model}";
+    string userId = UserService.GetUserId();
+    CarRental.Dto.Users.UserDto user = null;
+
+    if (!string.IsNullOrEmpty(userId))
+    {
+        user = UserService.GetUserByIdAsync(userId).GetAwaiter().GetResult();
+    }
 }
 
 <div class="container">
@@ -21,7 +29,20 @@
             <p><strong>Location:</strong> @Model.Location</p>
             <p><strong>Description:</strong> @Model.Description</p>
             <p><strong>Average Rating:</strong> @Model.AverageRating &#9733; (@Model.ReviewCount reviews)</p>
-            <a href="@Url.Action("Reserve", "Cars", new { id = Model.Id })" class="btn btn-primary mt-3">Reserve</a>
+            <a href="javascript:void(0);" class="btn btn-primary mt-3" onclick="checkUserAndRedirect('@Url.Action("Rent", "Cars", new { id = Model.Id })')">Rent</a>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function checkUserAndRedirect(url) {
+            var user = @Html.Raw(Json.Serialize(user));
+            if (user) {
+                window.location.href = url;
+            } else {
+                alert('You must be logged in to rent a car.');
+            }
+        }
+    </script>
+}

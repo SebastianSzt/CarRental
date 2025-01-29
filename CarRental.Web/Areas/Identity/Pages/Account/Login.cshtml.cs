@@ -54,7 +54,7 @@ namespace CarRental.Web.Areas.Identity.Pages.Account
                     return LocalRedirect(returnUrl);
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                TempData["ErrorMessage"] = "Invalid login attempt. Please check your credentials and try again.";
             }
 
             return Page();

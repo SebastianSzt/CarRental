@@ -70,11 +70,11 @@ namespace CarRental.Web.Areas.Identity.Pages.Account
 
                 if (result)
                 {
-
-                    return LocalRedirect(returnUrl);
+                    TempData["SuccessMessage"] = "Registration successful. You can now log in.";
+                    return RedirectToPage();
                 }
 
-                ModelState.AddModelError(string.Empty, "Registration failed.");
+                TempData["ErrorMessage"] = "Registration failed.";
             }
 
             return Page();
