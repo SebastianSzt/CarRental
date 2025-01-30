@@ -7,12 +7,10 @@ namespace CarRental.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _env;
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
+        public HomeController(IWebHostEnvironment env)
         {
-            _logger = logger;
             _env = env;
         }
 
