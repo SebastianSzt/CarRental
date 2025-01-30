@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@inject CarRental.Web.Services.UserService UserService
+@{
+    string userId = UserService.GetUserId();
+    CarRental.Dto.Users.UserDto user = null;
+
+    if (!string.IsNullOrEmpty(userId))
+    {
+        user = UserService.GetUserByIdAsync(userId).GetAwaiter().GetResult();
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,6 +39,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
                         </li>
+                        @if (user != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Rentals" asp-action="YourRentals">Your Rentals</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

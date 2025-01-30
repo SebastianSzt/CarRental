@@ -56,6 +56,31 @@ namespace CarRental.Api.Controllers
             return Ok(rentalsDto);
         }
 
+        [HttpGet("user/{userId}/rentals")]
+        public async Task<IActionResult> GetRentalsByUserId(string userId)
+        {
+            var rentals = await _rentalRepository.GetAllRentalsAsync();
+            var userRentals = rentals
+                .Where(r => r.UserId == userId)
+                .OrderBy(r => r.StartDate)
+                .ToList();
+
+            if (!userRentals.Any())
+                return NotFound("No rentals found for this user");
+
+            var rentalsDto = _mapper.Map<List<RentalDto>>(userRentals);
+
+            return Ok(rentalsDto);
+        }
+
+        [HttpGet("exists")]
+        public async Task<IActionResult> RentalExists(int carId, string userId)
+        {
+            var rentals = await _rentalRepository.GetAllRentalsAsync();
+            var exists = rentals.Any(r => r.CarId == carId && r.UserId == userId);
+            return Ok(exists);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -1,0 +1,64 @@
+﻿@model List<CarRental.Dto.Rentals.RentalDto>
+@inject CarRental.Web.Services.RentalService _RentalService
+@inject CarRental.Web.Services.ReviewService _ReviewService
+
+@{
+    ViewData["Title"] = "Your Rentals";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["ErrorMessage"]
+    </div>
+    TempData["ErrorMessage"] = null;
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+    TempData["SuccessMessage"] = null;
+}
+
+<h2>Your Rentals</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rental in Model)
+        {
+            <tr>
+                <td>@rental.CarName</td>
+                <td>@rental.StartDate</td>
+                <td>@rental.EndDate</td>
+                <td>@rental.TotalPrice PLN</td>
+                <td>@rental.Status</td>
+                <td>
+                    <a href="@Url.Action("More", "Cars", new { id = rental.CarId })" class="btn btn-info btn-sm">Car info</a>
+                    <form asp-action="CancelRental" method="post" style="display:inline;">
+                        <input type="hidden" name="rentalId" value="@rental.Id" />
+                        @if (rental.Status == "Pending")
+                        {
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel rent</button>
+                        }
+                    </form>
+                    @if (rental.Status == "Completed" && await _RentalService.RentalExistsAsync(rental.CarId, rental.UserId) && !(await _ReviewService.ReviewExistsAsync(rental.CarId, rental.UserId)))
+                    {
+                        <button class="btn btn-primary btn-sm">Add Review</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

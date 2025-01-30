@@ -44,6 +44,14 @@ namespace CarRental.Api.Controllers
             return Ok(reviewsDto);
         }
 
+        [HttpGet("exists")]
+        public async Task<IActionResult> ReviewExists(int carId, string userId)
+        {
+            var reviews = await _reviewRepository.GetAllReviewsAsync();
+            var exists = reviews.Any(r => r.CarId == carId && r.UserId == userId);
+            return Ok(exists);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

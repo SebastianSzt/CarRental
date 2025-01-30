@@ -24,5 +24,11 @@ namespace CarRental.Web.Services
             }
             return await response.Content.ReadFromJsonAsync<List<ReviewDto>>();
         }
+
+        public async Task<bool> ReviewExistsAsync(int carId, string userId)
+        {
+            var response = await _httpClient.GetAsync($"api/Reviews/exists?carId={carId}&userId={userId}");
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
     }
 }

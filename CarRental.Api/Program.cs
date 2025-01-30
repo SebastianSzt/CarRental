@@ -6,6 +6,7 @@ using CarRental.Repository.Reviews;
 using CarRental.Repository.Users;
 using CarRental.Model.Entities;
 using Microsoft.AspNetCore.Identity;
+using CarRental.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddSwaggerGen();
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddHostedService<RentalStatusUpdater>();
 
 var app = builder.Build();
 
