@@ -15,6 +15,12 @@ namespace CarRental.Web.Services
             _httpClient = httpClient;
         }
 
+        public async Task<bool> AddReviewAsync(ReviewInputDto review)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/reviews", review);
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<List<ReviewDto>> GetReviewsByCarIdAsync(int carId)
         {
             var response = await _httpClient.GetAsync($"api/Reviews/car/{carId}");

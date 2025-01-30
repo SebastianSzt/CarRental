@@ -55,7 +55,7 @@
                     </form>
                     @if (rental.Status == "Completed" && await _RentalService.RentalExistsAsync(rental.CarId, rental.UserId) && !(await _ReviewService.ReviewExistsAsync(rental.CarId, rental.UserId)))
                     {
-                        <button class="btn btn-primary btn-sm">Add Review</button>
+                        <a href="@Url.Action("AddReview", "Reviews", new { carId = rental.CarId })" class="btn btn-primary btn-sm">Add Review</a>
                     }
                 </td>
             </tr>

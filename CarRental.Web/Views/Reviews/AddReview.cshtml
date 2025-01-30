@@ -1,0 +1,51 @@
+﻿@model CarRental.Dto.Reviews.ReviewInputDto
+@inject CarRental.Web.Services.UserService UserService
+@inject CarRental.Web.Services.RentalService RentalService
+@inject CarRental.Web.Services.ReviewService ReviewService
+
+@{
+    ViewData["Title"] = "Add Review";
+}
+
+<h2>Add Review</h2>
+
+<form method="post" asp-action="AddReview">
+    <div class="form-group">
+        <label asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control"></textarea>
+        <span asp-validation-for="Comment" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rating"></label>
+        <input asp-for="Rating" class="form-control" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="CarId" />
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Date" value="@DateTime.Now" />
+    <br />
+    @if (!(await ReviewService.ReviewExistsAsync(Model.CarId, Model.UserId)))
+    {
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+</form>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["ErrorMessage"]
+    </div>
+    TempData["ErrorMessage"] = null;
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+    TempData["SuccessMessage"] = null;
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
