@@ -20,7 +20,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img class="img-fluid" src="~/images/@(string.IsNullOrEmpty(Model.Image) ? "noImage.jpg" : Model.Image)" alt="@Model.Brand @Model.Model" onerror="this.onerror=null;this.src='~/images/noPhoto.jpg';">
+                <img class="img-fluid" src="~/images/@(string.IsNullOrEmpty(Model.Image) ? "noImage.jpg" : Model.Image)" alt="@Model.Brand @Model.Model" onerror="this.onerror=null;this.src='/images/noImage.jpg';">
             </div>
             <div class="col-md-6">
                 <h2>@Model.Brand @Model.Model (@Model.Year)</h2>
