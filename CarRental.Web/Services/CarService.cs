@@ -50,5 +50,23 @@ namespace CarRental.Web.Services
                 return null;
             }
         }
+
+        public async Task<bool> AddCarAsync(CarInputDto car)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Cars", car);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateCarAsync(int id, CarInputDto car)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/Cars/{id}", car);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteCarAsync(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Cars/{id}");
+            return response.IsSuccessStatusCode;
+        }
     }
 }
