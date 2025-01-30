@@ -3,7 +3,7 @@
 @inject CarRental.Web.Services.UserService UserService
 
 @{
-    ViewData["Title"] = $"{Model.Brand} {Model.Model}";
+    ViewData["Title"] = $"{Model?.Brand} {Model?.Model}";
     string userId = UserService.GetUserId();
     CarRental.Dto.Users.UserDto user = null;
 
@@ -12,53 +12,66 @@
         user = UserService.GetUserByIdAsync(userId).GetAwaiter().GetResult();
     }
 
-    var reviews = ReviewService.GetReviewsByCarIdAsync(Model.Id).GetAwaiter().GetResult();
+    var reviews = Model != null ? ReviewService.GetReviewsByCarIdAsync(Model.Id).GetAwaiter().GetResult() : null;
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <img class="img-fluid" src="~/images/@(string.IsNullOrEmpty(Model.Image) ? "noImage.jpg" : Model.Image)" alt="@Model.Brand @Model.Model" onerror="this.onerror=null;this.src='~/images/noPhoto.jpg';">
+@if (Model != null && !string.IsNullOrEmpty(Model.Brand) && !string.IsNullOrEmpty(Model.Model))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-fluid" src="~/images/@(string.IsNullOrEmpty(Model.Image) ? "noImage.jpg" : Model.Image)" alt="@Model.Brand @Model.Model" onerror="this.onerror=null;this.src='~/images/noPhoto.jpg';">
+            </div>
+            <div class="col-md-6">
+                <h2>@Model.Brand @Model.Model (@Model.Year)</h2>
+                <p><strong>Color:</strong> @Model.Color</p>
+                <p><strong>Fuel Type:</strong> @Model.FuelType</p>
+                <p><strong>Fuel Consumption:</strong> @Model.FuelConsumption L/100km</p>
+                <p><strong>Fuel Tank Capacity:</strong> @Model.FuelTankCapacity L</p>
+                <p><strong>Horse Power:</strong> @Model.HorsePower HP</p>
+                <p><strong>Seat Count:</strong> @Model.SeatCount</p>
+                <p><strong>Price Per Day:</strong> @Model.PricePerDay PLN</p>
+                <p><strong>Location:</strong> @Model.Location</p>
+                <p><strong>Description:</strong> @Model.Description</p>
+                <p><strong>Average Rating:</strong> @Model.AverageRating &#9733; (@Model.ReviewCount reviews)</p>
+                <a href="javascript:void(0);" class="btn btn-primary mt-3" onclick="checkUserAndRedirect('@Url.Action("Rent", "Cars", new { id = Model.Id })')">Rent</a>
+            </div>
         </div>
-        <div class="col-md-6">
-            <h2>@Model.Brand @Model.Model (@Model.Year)</h2>
-            <p><strong>Color:</strong> @Model.Color</p>
-            <p><strong>Fuel Type:</strong> @Model.FuelType</p>
-            <p><strong>Fuel Consumption:</strong> @Model.FuelConsumption L/100km</p>
-            <p><strong>Fuel Tank Capacity:</strong> @Model.FuelTankCapacity L</p>
-            <p><strong>Horse Power:</strong> @Model.HorsePower HP</p>
-            <p><strong>Seat Count:</strong> @Model.SeatCount</p>
-            <p><strong>Price Per Day:</strong> @Model.PricePerDay PLN</p>
-            <p><strong>Location:</strong> @Model.Location</p>
-            <p><strong>Description:</strong> @Model.Description</p>
-            <p><strong>Average Rating:</strong> @Model.AverageRating &#9733; (@Model.ReviewCount reviews)</p>
-            <a href="javascript:void(0);" class="btn btn-primary mt-3" onclick="checkUserAndRedirect('@Url.Action("Rent", "Cars", new { id = Model.Id })')">Rent</a>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <hr />
-            <h3>Reviews</h3>
-            <div id="reviews">
-                @if (reviews != null && reviews.Any())
-                {
-                    @foreach (var review in reviews)
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <hr />
+                <h3>Reviews</h3>
+                <div id="reviews">
+                    @if (reviews != null && reviews.Any())
                     {
-                        <div class="review">
-                            <p><strong>@review.UserName</strong> (@review.Date.ToShortDateString())</p>
-                            <p>@review.Comment</p>
-                            <p>Rating: @review.Rating &#9733;</p>
-                        </div>
+                        @foreach (var review in reviews)
+                        {
+                            <div class="review">
+                                <p><strong>@review.UserName</strong> (@review.Date.ToShortDateString())</p>
+                                <p>@review.Comment</p>
+                                <p>Rating: @review.Rating &#9733;</p>
+                            </div>
+                        }
                     }
-                }
-                else
-                {
-                    <p>No reviews available.</p>
-                }
+                    else
+                    {
+                        <p>No reviews available.</p>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p>No information available.</p>
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <script type="text/javascript">

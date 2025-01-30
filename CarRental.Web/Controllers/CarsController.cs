@@ -27,10 +27,6 @@ namespace CarRental.Web.Controllers
         public async Task<IActionResult> More(int id)
         {
             var car = await _carService.GetCarByIdAsync(id);
-            if (car == null)
-            {
-                return NotFound();
-            }
             return View(car);
         }
 

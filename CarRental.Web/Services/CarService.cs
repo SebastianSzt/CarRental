@@ -17,12 +17,38 @@ namespace CarRental.Web.Services
 
         public async Task<IEnumerable<CarDto>> GetCarsAsync()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<CarDto>>("api/Cars");
+            var response = await _httpClient.GetAsync("api/Cars");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<CarDto>>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return new List<CarDto>();
+            }
+            else
+            {
+                response.EnsureSuccessStatusCode();
+                return null;
+            }
         }
 
         public async Task<CarDto> GetCarByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<CarDto>($"api/Cars/{id}");
+            var response = await _httpClient.GetAsync($"api/Cars/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<CarDto>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return new CarDto();
+            }
+            else
+            {
+                response.EnsureSuccessStatusCode();
+                return null;
+            }
         }
     }
 }
