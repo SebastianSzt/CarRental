@@ -121,33 +121,30 @@ namespace CarRental.Web.Controllers
                 }
                 TempData["ErrorMessage"] = "Failed to update car.";
             }
-            return View(car);
+
+            var editedCar = await _carService.GetCarByIdAsync(id);
+
+            return View(editedCar);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var checkAdminResult = await CheckAdminAsync();
-            if (checkAdminResult != null)
-            {
-                return checkAdminResult;
-            }
-
             var car = await _carService.GetCarByIdAsync(id);
             if (car == null)
             {
                 TempData["ErrorMessage"] = "Car not found.";
-                return View();
+                return RedirectToAction(nameof(Index));
             }
 
             var success = await _carService.DeleteCarAsync(id);
             if (success)
             {
                 TempData["SuccessMessage"] = "Car deleted successfully.";
-                return View();
+                return RedirectToAction(nameof(Index));
             }
             TempData["ErrorMessage"] = "Failed to delete car.";
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

@@ -6,7 +6,7 @@
 
 <h2>Edit Car</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" id="editCarForm">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="Brand"></label>
@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Year"></label>
-        <input asp-for="Year" class="form-control" />
+        <input asp-for="Year" class="form-control" type="number" value="@Model.Year" />
         <span asp-validation-for="Year" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -35,27 +35,27 @@
     </div>
     <div class="form-group">
         <label asp-for="FuelConsumption"></label>
-        <input asp-for="FuelConsumption" class="form-control" />
+        <input asp-for="FuelConsumption" class="form-control" type="number" step="any" value="@Model.FuelConsumption.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
         <span asp-validation-for="FuelConsumption" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="FuelTankCapacity"></label>
-        <input asp-for="FuelTankCapacity" class="form-control" />
+        <input asp-for="FuelTankCapacity" class="form-control" type="number" step="any" value="@Model.FuelTankCapacity.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
         <span asp-validation-for="FuelTankCapacity" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="HorsePower"></label>
-        <input asp-for="HorsePower" class="form-control" />
+        <input asp-for="HorsePower" class="form-control" type="number" value="@Model.HorsePower" />
         <span asp-validation-for="HorsePower" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="SeatCount"></label>
-        <input asp-for="SeatCount" class="form-control" />
+        <input asp-for="SeatCount" class="form-control" type="number" value="@Model.SeatCount" />
         <span asp-validation-for="SeatCount" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="PricePerDay"></label>
-        <input asp-for="PricePerDay" class="form-control" />
+        <input asp-for="PricePerDay" class="form-control" type="number" step="any" value="@Model.PricePerDay.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
         <span asp-validation-for="PricePerDay" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -94,4 +94,14 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('editCarForm').addEventListener('submit', function (event) {
+            var inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(function (input) {
+                if (input.value) {
+                    input.value = parseFloat(input.value.replace(',', '.')).toString();
+                }
+            });
+        });
+    </script>
 }
